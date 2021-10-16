@@ -79,6 +79,16 @@ class SiteController extends Controller
     }
 
     /**
+     * Displays help page.
+     *
+     * @return mixed
+     */
+    public function actionHelp()
+    {
+        return $this->render('help');
+    }
+
+    /**
      * Logs in a user.
      *
      * @return mixed
