@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Department;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -28,14 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'status',
             [
-                'attribute' => 'created_at',
-                'value' => function ($order_item) use ($model) {
-                    return date('d-M-Y h:m:s', $order_item->created_at);
+                'attribute' => 'status',
+                'format' => 'raw',
+                'filter' => Department::getStatusArray(),
+                'value' => function (Department $data) {
+                    return $data->getStatusName();
                 }
             ],
-            'updated_at',
+            [
+                'attribute' => 'created_at',
+                'value' => function ($model) {
+                    return date('d-M-Y h:m:s', $model->created_at);
+                }
+            ],
+            [
+                'attribute' => 'updated_at',
+                'value' => function ($model) {
+                    return date('d-M-Y h:m:s', $model->updated_at);
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

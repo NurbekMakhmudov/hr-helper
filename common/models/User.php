@@ -35,7 +35,6 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 10;
 
     const ROLE_ADMIN = 'admin';
-    const ROLE_MANAGER = 'manager';
     const ROLE_CLIENT = 'client';
 
 
@@ -46,6 +45,31 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return '{{%user}}';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'username' => Yii::t('app', 'Username'),
+            'firstname' => Yii::t('app', 'Имя пользователя'),
+            'lastname' => Yii::t('app', 'Lastname'),
+            'age' => Yii::t('app', 'Age'),
+            'auth_key' => Yii::t('app', 'Auth Key'),
+            'password_hash' => Yii::t('app', 'Password Hash'),
+            'password_reset_token' => Yii::t('app', 'Password Reset Token'),
+            'email' => Yii::t('app', 'Email'),
+            'phone' => Yii::t('app', 'Phone'),
+            'status' => Yii::t('app', 'Status'),
+            'role' => Yii::t('app', 'Role'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At'),
+            'verification_token' => Yii::t('app', 'Verification Token'),
+        ];
+    }
+
 
     /**
      * {@inheritdoc}
@@ -222,24 +246,12 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Access for client, admin and manager
+     * Access for client, admin
      * @return bool
      */
     public function isClient()
     {
-        if ($this->role === self::ROLE_CLIENT || $this->role === self::ROLE_ADMIN || $this->role === self::ROLE_MANAGER)
-            return true;
-
-        return false;
-    }
-
-    /**
-     * Access for admin and manager
-     * @return bool
-     */
-    public function isManager()
-    {
-        if ($this->role === self::ROLE_ADMIN || $this->role === self::ROLE_MANAGER)
+        if ($this->role === self::ROLE_CLIENT || $this->role === self::ROLE_ADMIN)
             return true;
 
         return false;

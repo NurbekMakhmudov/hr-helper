@@ -41,7 +41,7 @@ class User extends \common\models\User
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'role', 'created_at', 'updated_at'], 'required'],
+            [['username', 'phone', 'email', 'auth_key', 'password_hash', 'role', 'created_at', 'updated_at'], 'required'],
             [['age', 'status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'firstname', 'lastname', 'password_hash', 'password_reset_token', 'email', 'phone', 'role', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
@@ -52,29 +52,6 @@ class User extends \common\models\User
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'username' => Yii::t('app', 'Username'),
-            'firstname' => Yii::t('app', 'Firstname'),
-            'lastname' => Yii::t('app', 'Lastname'),
-            'age' => Yii::t('app', 'Age'),
-            'auth_key' => Yii::t('app', 'Auth Key'),
-            'password_hash' => Yii::t('app', 'Password Hash'),
-            'password_reset_token' => Yii::t('app', 'Password Reset Token'),
-            'email' => Yii::t('app', 'Email'),
-            'phone' => Yii::t('app', 'Phone'),
-            'status' => Yii::t('app', 'Status'),
-            'role' => Yii::t('app', 'Role'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'verification_token' => Yii::t('app', 'Verification Token'),
-        ];
-    }
 
     /**
      * Gets query for [[UserToDepartments]].

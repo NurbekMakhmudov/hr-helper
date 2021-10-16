@@ -28,7 +28,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        /*'actions' => ['logout', 'index', 'help'],*/
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -64,6 +64,18 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+
+    /**
+     * Displays help page.
+     *
+     * @return string
+     */
+    public function actionHelp()
+    {
+        return $this->render('help');
+    }
+
+
 
     /**
      * Login action.

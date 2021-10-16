@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\Department;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -31,7 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'status',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'filter' => Department::getStatusArray(),
+                'value' => function (Department $data) {
+                    return $data->getStatusName();
+                }
+            ],
             [
                 'attribute' => 'created_at',
                 'value' => function ($model){

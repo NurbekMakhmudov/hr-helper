@@ -61,4 +61,30 @@ class Department extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UserToDepartment::className(), ['department_id' => 'id']);
     }
+
+    /**
+     * Status
+     */
+    const STATUS_IN_ACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
+    public static function getStatusArray($status = null)
+    {
+        $array = [
+            self::STATUS_IN_ACTIVE => Yii::t('app', 'IN ACTIVE'),
+            self::STATUS_ACTIVE => Yii::t('app', 'ACTIVE'),
+        ];
+        return $status === null ? $array : $array[$status];
+    }
+
+    public function getStatusName()
+    {
+        $array = [
+            self::STATUS_ACTIVE => '<span class="text-bold text-light-blue">' . self::getStatusArray(self::STATUS_ACTIVE) . '</span>',
+            self::STATUS_IN_ACTIVE => '<span class="text-bold text-red">' . self::getStatusArray(self::STATUS_IN_ACTIVE) . '</span>',
+        ];
+
+        return isset($array[$this->status]) ? $array[$this->status] : '';
+    }
+
 }

@@ -44,7 +44,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, Yii::t('app', 'Неверное имя пользователя или пароль.'));
             }
         }
     }
@@ -71,7 +71,7 @@ class LoginForm extends Model
     public function loginBackend()
     {
         $user = $this->getUser();
-        if ($this->validate() && ($user->isAdmin() || $user->isManager())) {
+        if ($this->validate() && $user->isAdmin()) {
             return Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
 
