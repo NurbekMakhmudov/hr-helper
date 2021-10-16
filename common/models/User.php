@@ -13,10 +13,14 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property string $username
+ * @property string $firstname
+ * @property string $lastname
+ * @property integer $age
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $verification_token
  * @property string $email
+ * @property string $phone
  * @property string $auth_key
  * @property integer $status
  * @property integer $created_at

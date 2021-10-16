@@ -1,4 +1,7 @@
 <?php
+
+require 'helpers.php';
+
 return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',

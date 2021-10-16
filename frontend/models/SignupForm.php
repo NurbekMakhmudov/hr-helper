@@ -39,7 +39,7 @@ class SignupForm extends Model
     }
 
     /**
-     * Signs user up.
+     * After signs user up, enabled auto login.
      *
      * @return bool whether the creating new account was successful and email was sent
      */
@@ -48,15 +48,21 @@ class SignupForm extends Model
         if (!$this->validate()) {
             return null;
         }
-        
+
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
+        $user->status = User::STATUS_ACTIVE;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($user);
+        if ($user->save()) {
+            if (Yii::$app->user->login($user))
+                return true;
+        }
+
+        return null;
     }
 
     /**
