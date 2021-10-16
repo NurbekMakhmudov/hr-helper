@@ -59,9 +59,25 @@ class LoginForm extends Model
         if ($this->validate()) {
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
-        
+
         return false;
     }
+
+    /**
+     * Login for manager and admin
+     *
+     * @return bool whether the user is logged in successfully
+     */
+    public function loginBackend()
+    {
+        $user = $this->getUser();
+        if ($this->validate() && ($user->isAdmin() || $user->isManager())) {
+            return Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
+        }
+
+        return false;
+    }
+
 
     /**
      * Finds user by [[username]]
