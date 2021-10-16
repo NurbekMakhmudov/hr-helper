@@ -8,12 +8,14 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'name' => 'HR помощник',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
         'request' => [
+            'baseUrl' => '/app',
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
@@ -37,14 +39,14 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];
