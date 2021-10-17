@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%user_to_department}}`.
+ * Handles the creation of table `{{%user_to_departmeent}}`.
  */
-class m211016_051301_create_user_to_department_table extends Migration
+class m211017_083806_create_user_to_departmeent_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,6 +13,7 @@ class m211016_051301_create_user_to_department_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%user_to_department}}', [
+            'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'department_id' => $this->integer()->notNull(),
 
@@ -25,7 +26,6 @@ class m211016_051301_create_user_to_department_table extends Migration
 
         $this->addForeignKey('FK_user_to_department_ad_department', 'user_to_department', 'department_id',
             'department', 'id');
-
     }
 
     /**
@@ -33,6 +33,6 @@ class m211016_051301_create_user_to_department_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%user_to_department}}');
+        $this->dropTable('{{%user_to_departmeent}}');
     }
 }

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\User */
+/* @var $model User */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Users'), 'url' => ['index']];
@@ -27,10 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
+            [
+                'attribute' => 'department',
+                'format'=>'raw',
+                'value' => function ($model) {
+                    return  Html::a($model->userToDepartments[0]->department->name,
+                        ['department/view', 'id' => $model->userToDepartments[0]->department->id], ['class' => 'profile-link']);
+
+                }
+            ],
             'username',
             'firstname',
             'lastname',
@@ -51,13 +61,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'role',
             [
                 'attribute' => 'created_at',
-                'value' => function ($model){
+                'value' => function ($model) {
                     return date('d-M-Y h:m:s', $model->created_at);
                 }
             ],
             [
                 'attribute' => 'updated_at',
-                'value' => function ($model){
+                'value' => function ($model) {
                     return date('d-M-Y h:m:s', $model->updated_at);
                 }
             ],

@@ -4,10 +4,12 @@ namespace backend\models;
 
 use common\models\User;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "user_to_department".
  *
+ * @property int $id
  * @property int $user_id
  * @property int $department_id
  * @property int $created_at
@@ -18,6 +20,7 @@ use Yii;
  */
 class UserToDepartment extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -45,6 +48,7 @@ class UserToDepartment extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', 'User ID'),
             'department_id' => Yii::t('app', 'Department ID'),
             'created_at' => Yii::t('app', 'Created At'),

@@ -83,9 +83,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            TimestampBehavior::className()
         ];
     }
+
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
 
     /**
      * {@inheritdoc}
@@ -93,7 +96,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['department', 'username', 'phone', 'email', 'password', 'auth_key', 'password_hash', 'role', 'created_at', 'updated_at'], 'required'],
+            [['department', 'username', 'phone', 'email', 'auth_key', 'password_hash', 'role', 'created_at', 'updated_at'], 'required'],
             [['age', 'status', 'created_at', 'updated_at'], 'integer'],
             [['username', 'firstname', 'lastname', 'password_hash', 'password_reset_token', 'email', 'phone', 'role', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
@@ -102,9 +105,24 @@ class User extends ActiveRecord implements IdentityInterface
             [['email'], 'unique'],
             [['phone'], 'unique'],
 
+            [['password'], 'required', 'on' => self::SCENARIO_CREATE],
+
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_CREATE] = ['username', 'department', 'password', 'role',
+            'firstname', 'lastname', 'age', 'password_reset_token',  'email', 'phone', 'status'];
+
+        $scenarios[self::SCENARIO_UPDATE] = ['username', 'department', 'password', 'role',
+            'firstname', 'lastname', 'age', 'password_reset_token',  'email', 'phone', 'status'];
+
+        return $scenarios;
     }
 
     /**
@@ -170,8 +188,6 @@ class User extends ActiveRecord implements IdentityInterface
 
         return isset($array[$this->status]) ? $array[$this->status] : '';
     }
-
-
 
 
     /**
@@ -363,19 +379,57 @@ class User extends ActiveRecord implements IdentityInterface
         $this->created_at = time();
         $this->updated_at = time();
 
-        if ($this->save())
-            return $this;
+        if ($this->save()) {
+
+            $userToDepartment = new UserToDepartment();
+            $userToDepartment->department_id = $this->department;
+            $userToDepartment->user_id = $this->id;
+            $userToDepartment->created_at = time();
+            $userToDepartment->updated_at = time();
+
+            if ($userToDepartment->save())
+                return $this;
+            else
+                setFlash('error', $userToDepartment->errors);
+        }else
+            setFlash('error', $this->errors);
 
         return null;
     }
 
+    /**
+     * Update a  user
+     * @return User|null
+     */
+    public function updateUser()
+    {
+        $this->updated_at = time();
+        if ($this->save()) {
 
+            /** @var UserToDepartment $userToDepartment */
+            $userToDepartment = UserToDepartment::find()
+                ->where([
+                    'user_id' => $this->id
+                ])
+                ->andWhere([
+                    'department_id' => $this->userToDepartments[0]->department_id
+                ])
+                ->one();
 
+            $userToDepartment->department_id = $this->department;
+            $userToDepartment->user_id = $this->id;
+            $userToDepartment->updated_at = time();
 
+            if ($userToDepartment->save())
+                return $this;
+            else
+                dd($userToDepartment->errors);
+        }
+        else
+            dd($this->errors);
 
-
-
-
+        return null;
+    }
 
 
 }

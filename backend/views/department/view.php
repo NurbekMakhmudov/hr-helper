@@ -1,11 +1,16 @@
 <?php
 
 use backend\models\Department;
+use common\models\User;
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Department */
+
+/* @var $searchModel backend\models\DepartmentSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Departments'), 'url' => ['index']];
@@ -54,5 +59,49 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
+
+    <h1>Users</h1>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'username',
+            'firstname',
+            [
+                'attribute' => 'department',
+                'format'=>'raw',
+                'value' => function ($model) {
+                    return  Html::a($model->userToDepartments[0]->department->name,
+                        ['department/view', 'id' => $model->userToDepartments[0]->department->id], ['class' => 'profile-link']);
+
+                }
+            ],
+//            'lastname',
+//            'age',
+            //'auth_key',
+            //'password_hash',
+            //'password_reset_token',
+            //'email:email',
+            //'phone',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'filter' => User::getStatusArray(),
+                'value' => function (User $data) {
+                    return $data->getStatusName();
+                }
+            ],
+            //'role',
+            //'created_at',
+            //'updated_at',
+            //'verification_token',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
 
 </div>
