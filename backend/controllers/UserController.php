@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Department;
 use backend\models\DepartmentSearch;
 use backend\models\UserSearch;
+use backend\models\UserToDepartment;
 use common\models\User;
 use Yii;
 use yii\web\Controller;
@@ -140,6 +141,8 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
+        UserToDepartment::deleteUserToDepartmentByUserId($id);
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

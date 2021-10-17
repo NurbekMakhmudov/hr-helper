@@ -75,4 +75,19 @@ class UserToDepartment extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public static function deleteUserToDepartmentByUserId($user_id)
+    {
+        $userToDepartments = UserToDepartment::find()
+            ->where([
+                'user_id' => $user_id
+            ])
+            ->all();
+
+        /** @var UserToDepartment $userToDepartment */
+        foreach ($userToDepartments as $userToDepartment) {
+            $userToDepartment->delete();
+        }
+
+    }
 }
