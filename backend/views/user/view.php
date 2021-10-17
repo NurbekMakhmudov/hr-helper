@@ -1,11 +1,15 @@
 <?php
 
+use backend\models\Department;
 use common\models\User;
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model User */
+/* @var $searchModel backend\models\DepartmentSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Users'), 'url' => ['index']];
@@ -14,7 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
 
+    <h1>User <?= $this->title ?></h1>
+    
     <p>
+        <?= Html::a(Yii::t('app', 'Add Department'), ['add-department', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -25,20 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
-            [
-                'attribute' => 'department',
-                'format'=>'raw',
-                'value' => function ($model) {
-                    return  Html::a($model->userToDepartments[0]->department->name,
-                        ['department/view', 'id' => $model->userToDepartments[0]->department->id], ['class' => 'profile-link']);
-
-                }
-            ],
             'username',
             'firstname',
             'lastname',
@@ -72,5 +69,44 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'verification_token',
         ],
     ]) ?>
+
+    <h2>Department information's</h2>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            'id',
+            [
+                'attribute' => 'name',
+                'format'=>'raw',
+                'value' => function ($model) {
+                    return  Html::a($model->name,
+                        ['department/view', 'id' => $model->id], ['class' => 'profile-link']);
+
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'filter' => Department::getStatusArray(),
+                'value' => function (Department $data) {
+                    return $data->getStatusName();
+                }
+            ],
+            [
+                'attribute' => 'created_at',
+                'value' => function ($model) {
+                    return date('d-M-Y h:m:s', $model->created_at);
+                }
+            ],
+            [
+                'attribute' => 'updated_at',
+                'value' => function ($model) {
+                    return date('d-M-Y h:m:s', $model->updated_at);
+                }
+            ],
+
+        ],
+    ]); ?>
 
 </div>

@@ -30,17 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'firstname',
-            [
-                'attribute' => 'department',
-                'format'=>'raw',
-                'value' => function ($model) {
-                    return  Html::a($model->userToDepartments[0]->department->name,
-                        ['department/view', 'id' => $model->userToDepartments[0]->department->id], ['class' => 'profile-link']);
 
-                }
-            ],
-            //'email:email',
-            //'phone',
+            'email:email',
+//            'phone',
             [
                 'attribute' => 'status',
                 'format' => 'raw',

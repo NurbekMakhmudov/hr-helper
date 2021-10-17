@@ -89,6 +89,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
+    const SCENARIO_ADD_DEPARTMENT = 'add_department';
 
     /**
      * {@inheritdoc}
@@ -121,6 +122,10 @@ class User extends ActiveRecord implements IdentityInterface
 
         $scenarios[self::SCENARIO_UPDATE] = ['username', 'department', 'password', 'role',
             'firstname', 'lastname', 'age', 'password_reset_token', 'email', 'phone', 'status'];
+
+        $scenarios[self::SCENARIO_ADD_DEPARTMENT] = ['username', 'department', 'password', 'role',
+            'firstname', 'lastname', 'age', 'password_reset_token', 'email', 'phone', 'status'];
+
 
         return $scenarios;
     }
@@ -380,14 +385,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->updated_at = time();
 
         if ($this->save()) {
-
-            $userToDepartment = new UserToDepartment();
-            $userToDepartment->department_id = $this->department;
-            $userToDepartment->user_id = $this->id;
-            $userToDepartment->created_at = time();
-            $userToDepartment->updated_at = time();
-
-            if ($userToDepartment->save())
+            if ($this->saveNewUserToDepartment())
                 return $this;
         }
 
@@ -423,6 +421,39 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         return null;
+    }
+
+    /**
+     * Add department to  user
+     * @return User|null
+     */
+    public function addDepartment()
+    {
+        $this->updated_at = time();
+        if ($this->save()) {
+            if ($this->saveNewUserToDepartment())
+                return $this;
+        }
+        return null;
+    }
+
+    /**
+     * save new UserToDepartment
+     *
+     * @return bool
+     */
+    public function saveNewUserToDepartment()
+    {
+        $userToDepartment = new UserToDepartment();
+        $userToDepartment->department_id = $this->department;
+        $userToDepartment->user_id = $this->id;
+        $userToDepartment->created_at = time();
+        $userToDepartment->updated_at = time();
+
+        if ($userToDepartment->save())
+            return true;
+
+        return false;
     }
 
 

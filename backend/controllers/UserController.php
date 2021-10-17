@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\Department;
+use backend\models\DepartmentSearch;
 use backend\models\UserSearch;
 use common\models\User;
 use Yii;
@@ -60,8 +61,13 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new DepartmentSearch();
+        $dataProvider = $searchModel->searchUserDepartments($this->request->queryParams);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -106,6 +112,21 @@ class UserController extends Controller
         }
 
         return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionAddDepartment($id){
+
+        $model = $this->findModel($id);
+        $model->scenario = User::SCENARIO_ADD_DEPARTMENT;
+
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if ($model->addDepartment())
+                return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('add_department', [
             'model' => $model,
         ]);
     }

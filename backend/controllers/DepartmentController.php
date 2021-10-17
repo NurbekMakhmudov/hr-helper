@@ -58,7 +58,7 @@ class DepartmentController extends Controller
     public function actionView($id)
     {
         $searchModel = new UserSearch();
-        $dataProvider = $searchModel->searchOneDepartmentUsers($this->request->queryParams);
+        $dataProvider = $searchModel->searchDepartmentUsers($this->request->queryParams);
 
         return $this->render('view', [
             'model' => $this->findModel($id),

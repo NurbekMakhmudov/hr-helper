@@ -1,9 +1,10 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\User */
+/* @var $model User */
 
 $this->title = Yii::t('app', 'Update User: {name}', [
     'name' => $model->id,

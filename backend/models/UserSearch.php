@@ -85,7 +85,7 @@ class UserSearch extends User
      *
      * @return ArrayDataProvider
      */
-    public function searchOneDepartmentUsers($params)
+    public function searchDepartmentUsers($params)
     {
         $userToDepartments = UserToDepartment::find()
             ->where([

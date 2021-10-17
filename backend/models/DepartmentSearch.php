@@ -4,6 +4,7 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 
 /**
  * DepartmentSearch represents the model behind the search form of `backend\models\Department`.
@@ -67,4 +68,38 @@ class DepartmentSearch extends Department
 
         return $dataProvider;
     }
+
+    /**
+     * @param array $params
+     *
+     * @return ArrayDataProvider
+     */
+    public function searchUserDepartments($params)
+    {
+        $userToDepartments = UserToDepartment::find()
+            ->where([
+                'user_id' => $params['id']
+            ])
+            ->all();
+
+        $data = array();
+        /** @var UserToDepartment $userToDepartment */
+        foreach ($userToDepartments as $userToDepartment) {
+            $data[] = Department::find()
+                ->where([
+                    'id' => $userToDepartment->department_id
+                ])
+                ->one();
+        }
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $data,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        return $dataProvider;
+    }
+
 }
