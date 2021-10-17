@@ -5,6 +5,7 @@ namespace backend\models;
 use common\models\User;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 
 /**
  * UserSearch represents the model behind the search form of `backend\models\User`.
@@ -75,6 +76,39 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'role', $this->role])
             ->andFilterWhere(['like', 'verification_token', $this->verification_token]);
+
+        return $dataProvider;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return ArrayDataProvider
+     */
+    public function searchOneDepartmentUsers($params)
+    {
+        $userToDepartments = UserToDepartment::find()
+            ->where([
+                'department_id' => $params['id']
+            ])
+            ->all();
+
+        $data = array();
+        /** @var UserToDepartment $userToDepartment */
+        foreach ($userToDepartments as $userToDepartment) {
+            $data[] = User::find()
+                ->where([
+                    'id' => $userToDepartment->user_id
+                ])
+                ->one();
+        }
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $data,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
 
         return $dataProvider;
     }

@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Department;
 use backend\models\DepartmentSearch;
 use backend\models\UserSearch;
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -57,7 +58,7 @@ class DepartmentController extends Controller
     public function actionView($id)
     {
         $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->searchOneDepartmentUsers($this->request->queryParams);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -122,6 +123,8 @@ class DepartmentController extends Controller
      */
     public function actionDelete($id)
     {
+        Department::deleteAllUserByDepartment($id);
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

@@ -117,10 +117,10 @@ class User extends ActiveRecord implements IdentityInterface
         $scenarios = parent::scenarios();
 
         $scenarios[self::SCENARIO_CREATE] = ['username', 'department', 'password', 'role',
-            'firstname', 'lastname', 'age', 'password_reset_token',  'email', 'phone', 'status'];
+            'firstname', 'lastname', 'age', 'password_reset_token', 'email', 'phone', 'status'];
 
         $scenarios[self::SCENARIO_UPDATE] = ['username', 'department', 'password', 'role',
-            'firstname', 'lastname', 'age', 'password_reset_token',  'email', 'phone', 'status'];
+            'firstname', 'lastname', 'age', 'password_reset_token', 'email', 'phone', 'status'];
 
         return $scenarios;
     }
@@ -389,10 +389,7 @@ class User extends ActiveRecord implements IdentityInterface
 
             if ($userToDepartment->save())
                 return $this;
-            else
-                setFlash('error', $userToDepartment->errors);
-        }else
-            setFlash('error', $this->errors);
+        }
 
         return null;
     }
@@ -422,11 +419,8 @@ class User extends ActiveRecord implements IdentityInterface
 
             if ($userToDepartment->save())
                 return $this;
-            else
-                dd($userToDepartment->errors);
+
         }
-        else
-            dd($this->errors);
 
         return null;
     }

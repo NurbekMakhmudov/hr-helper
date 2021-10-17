@@ -39,11 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 }
             ],
-//            'lastname',
-//            'age',
-            //'auth_key',
-            //'password_hash',
-            //'password_reset_token',
             //'email:email',
             //'phone',
             [
@@ -54,11 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $data->getStatusName();
                 }
             ],
-            //'role',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
-
+            'role',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

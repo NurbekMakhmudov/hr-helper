@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Department */
 
-/* @var $searchModel backend\models\DepartmentSearch */
+/* @var $searchModel \backend\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->name;
@@ -64,29 +64,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'username',
-            'firstname',
             [
-                'attribute' => 'department',
+                'attribute' => 'username',
                 'format'=>'raw',
                 'value' => function ($model) {
-                    return  Html::a($model->userToDepartments[0]->department->name,
-                        ['department/view', 'id' => $model->userToDepartments[0]->department->id], ['class' => 'profile-link']);
+                    return  Html::a($model->username,
+                        ['user/view', 'id' => $model->id], ['class' => 'profile-link']);
 
                 }
             ],
-//            'lastname',
-//            'age',
-            //'auth_key',
-            //'password_hash',
-            //'password_reset_token',
-            //'email:email',
-            //'phone',
+            'firstname',
+            'lastname',
+            'age',
+            'email:email',
+            'phone',
             [
                 'attribute' => 'status',
                 'format' => 'raw',
@@ -95,12 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $data->getStatusName();
                 }
             ],
-            //'role',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            'role',
         ],
     ]); ?>
 

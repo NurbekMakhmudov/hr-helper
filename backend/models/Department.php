@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -119,6 +120,24 @@ class Department extends \yii\db\ActiveRecord
         $result = ArrayHelper::map($departments, 'id', 'name');;
 
         return $result;
+    }
+
+
+    public static function deleteAllUserByDepartment($department_id)
+    {
+        $userToDepartments = UserToDepartment::find()
+            ->where([
+                'department_id' => $department_id
+            ])
+            ->all();
+
+        /** @var UserToDepartment $userToDepartment */
+        foreach ($userToDepartments as $userToDepartment) {
+            $user_id = $userToDepartment->user_id;
+            $userToDepartment->delete();
+            User::findOne($user_id)->delete();
+        }
+
     }
 
 
