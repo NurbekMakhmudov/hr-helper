@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "department".
@@ -65,26 +66,60 @@ class Department extends \yii\db\ActiveRecord
     /**
      * Status
      */
-    const STATUS_IN_ACTIVE = 0;
+    const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
 
+    /**
+     * @param null $status
+     * @return array|mixed
+     */
     public static function getStatusArray($status = null)
     {
         $array = [
-            self::STATUS_IN_ACTIVE => Yii::t('app', 'IN ACTIVE'),
             self::STATUS_ACTIVE => Yii::t('app', 'ACTIVE'),
+            self::STATUS_INACTIVE => Yii::t('app', 'INACTIVE'),
         ];
         return $status === null ? $array : $array[$status];
     }
 
+    /**
+     * @return string
+     */
     public function getStatusName()
     {
         $array = [
-            self::STATUS_ACTIVE => '<span class="text-bold text-light-blue">' . self::getStatusArray(self::STATUS_ACTIVE) . '</span>',
-            self::STATUS_IN_ACTIVE => '<span class="text-bold text-red">' . self::getStatusArray(self::STATUS_IN_ACTIVE) . '</span>',
+            self::STATUS_ACTIVE => '<b style="color: blue">' . self::getStatusArray(self::STATUS_ACTIVE) . '</b>',
+            self::STATUS_INACTIVE => '<b style="color: red">' . self::getStatusArray(self::STATUS_INACTIVE) . '</b>',
         ];
 
         return isset($array[$this->status]) ? $array[$this->status] : '';
     }
+
+    /**
+     * check departments if exists
+     *
+     * @return bool
+     */
+    public static function departmentsExists(){
+        return Department::find()->exists();
+    }
+
+    /**
+     * get department names with id
+     *
+     * @return array
+     */
+    public static function getDepartmentsNames()
+    {
+        $departments = Department::find()
+            ->select(['id', 'name'])
+            ->asArray()
+            ->all();
+
+        $result = ArrayHelper::map($departments, 'id', 'name');;
+
+        return $result;
+    }
+
 
 }

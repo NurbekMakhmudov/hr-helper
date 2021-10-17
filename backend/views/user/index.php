@@ -1,5 +1,6 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -29,14 +30,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'firstname',
-            'lastname',
+//            'lastname',
             'age',
             //'auth_key',
             //'password_hash',
             //'password_reset_token',
             //'email:email',
             //'phone',
-            //'status',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'filter' => User::getStatusArray(),
+                'value' => function (User $data) {
+                    return $data->getStatusName();
+                }
+            ],
             //'role',
             //'created_at',
             //'updated_at',

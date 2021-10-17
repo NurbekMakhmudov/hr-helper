@@ -2,9 +2,9 @@
 
 namespace backend\controllers;
 
-use backend\forms\CreateUserForm;
-use backend\models\User;
+use backend\models\Department;
 use backend\models\UserSearch;
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -20,6 +20,10 @@ class UserController extends Controller
      */
     public function behaviors()
     {
+
+        if (!Department::departmentsExists())
+            $this->redirect('/app/department/create');
+
         return array_merge(
             parent::behaviors(),
             [
@@ -68,14 +72,14 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new CreateUserForm();
+        $model = new User();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->createUser()) {
-                if (!isNullObject($model))
-                    return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-
+        } else {
+            $model->loadDefaultValues();
         }
 
         return $this->render('create', [

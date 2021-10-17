@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\models\UserToDepartment;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -27,6 +28,8 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ *
+ * @property UserToDepartment[] $userToDepartments
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -36,6 +39,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     const ROLE_ADMIN = 'admin';
     const ROLE_CLIENT = 'client';
+
+    public $password;
+    public $department;
 
 
     /**
@@ -87,10 +93,86 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['department', 'username', 'phone', 'email', 'password', 'auth_key', 'password_hash', 'role', 'created_at', 'updated_at'], 'required'],
+            [['age', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'firstname', 'lastname', 'password_hash', 'password_reset_token', 'email', 'phone', 'role', 'verification_token'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
+            [['username'], 'unique'],
+            [['password_reset_token'], 'unique'],
+            [['email'], 'unique'],
+            [['phone'], 'unique'],
+
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];
     }
+
+    /**
+     * Gets query for [[UserToDepartments]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserToDepartments()
+    {
+        return $this->hasMany(UserToDepartment::className(), ['user_id' => 'id']);
+    }
+
+
+    /**
+     * role
+     */
+    public static function getRoleArray($role = null)
+    {
+        $array = [
+            self::ROLE_CLIENT => Yii::t('app', 'CLIENT'),
+            self::ROLE_ADMIN => Yii::t('app', 'ADMIN'),
+        ];
+        return $role === null ? $array : $array[$role];
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoleName()
+    {
+        $array = [
+            self::ROLE_CLIENT => '<b style="color: lightskyblue">' . self::getRoleArray(self::ROLE_CLIENT) . '</b>',
+            self::ROLE_ADMIN => '<b style="color: red">' . self::getRoleArray(self::ROLE_ADMIN) . '</b>',
+        ];
+
+        return isset($array[$this->role]) ? $array[$this->role] : '';
+    }
+
+
+    /**
+     * Status
+     */
+    public static function getStatusArray($status = null)
+    {
+        $array = [
+            self::STATUS_INACTIVE => Yii::t('app', 'INACTIVE'),
+            self::STATUS_ACTIVE => Yii::t('app', 'ACTIVE'),
+//            self::STATUS_DELETED => Yii::t('app', 'DELETED'),
+        ];
+        return $status === null ? $array : $array[$status];
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusName()
+    {
+        $array = [
+            self::STATUS_INACTIVE => '<b style="color: red">' . self::getStatusArray(self::STATUS_INACTIVE) . '</b>',
+            self::STATUS_ACTIVE => '<b style="color: blue">' . self::getStatusArray(self::STATUS_ACTIVE) . '</b>',
+//            self::STATUS_DELETED => '<b style="color: yellow">' . self::getStatusArray(self::STATUS_DELETED) . '</b>',
+        ];
+
+        return isset($array[$this->status]) ? $array[$this->status] : '';
+    }
+
+
+
 
     /**
      * {@inheritdoc}
@@ -268,6 +350,28 @@ class User extends ActiveRecord implements IdentityInterface
 
         return false;
     }
+
+    /**
+     * Create a new user
+     * @return User|null
+     */
+    public function createUser()
+    {
+        $this->setPassword($this->password);
+        $this->generateAuthKey();
+        $this->generateEmailVerificationToken();
+        $this->created_at = time();
+        $this->updated_at = time();
+
+        if ($this->save())
+            return $this;
+
+        return null;
+    }
+
+
+
+
 
 
 

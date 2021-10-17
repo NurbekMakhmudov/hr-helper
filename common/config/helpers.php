@@ -217,7 +217,7 @@ if (!function_exists('priceAddSumNameNotSumm')) {
 
     function priceAddSumNameNotSumm($price)
     {
-        return number_format(Product::getPriceBySumStatic((float)$price), 0, '.', ' ') . Yii::t('functions', "");
+//        return number_format(Product::getPriceBySumStatic((float)$price), 0, '.', ' ') . Yii::t('functions', "");
     }
 }
 

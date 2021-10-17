@@ -1,5 +1,6 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -34,12 +35,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'firstname',
             'lastname',
             'age',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
+//            'auth_key',
+//            'password_hash',
+//            'password_reset_token',
             'email:email',
             'phone',
-            'status',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'filter' => User::getStatusArray(),
+                'value' => function (User $data) {
+                    return $data->getStatusName();
+                }
+            ],
             'role',
             [
                 'attribute' => 'created_at',
@@ -53,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return date('d-M-Y h:m:s', $model->updated_at);
                 }
             ],
-            'verification_token',
+//            'verification_token',
         ],
     ]) ?>
 
