@@ -7,6 +7,7 @@ use backend\models\DepartmentSearch;
 use backend\models\UserSearch;
 use common\models\User;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +25,16 @@ class DepartmentController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
+
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
