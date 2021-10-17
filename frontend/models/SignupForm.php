@@ -58,10 +58,16 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
+        $user->department = 1;
+        $user->phone = '1111111111111';
+        $user->created_at = time();
+        $user->updated_at = time();
+
         if ($user->save()) {
             if (Yii::$app->user->login($user))
                 return true;
-        }
+        }else
+            dd($user->errors);
 
         return null;
     }

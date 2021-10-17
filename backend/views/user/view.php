@@ -19,17 +19,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-view">
 
     <h1>User <?= $this->title ?></h1>
-    
+
     <p>
         <?= Html::a(Yii::t('app', 'Add Department'), ['add-department', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if (!$model->isAdmin()): ?>
+            <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
+
     </p>
 
     <?= DetailView::widget([
@@ -78,9 +81,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'attribute' => 'name',
-                'format'=>'raw',
+                'format' => 'raw',
                 'value' => function ($model) {
-                    return  Html::a($model->name,
+                    return Html::a($model->name,
                         ['department/view', 'id' => $model->id], ['class' => 'profile-link']);
 
                 }

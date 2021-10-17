@@ -123,11 +123,26 @@ class DepartmentController extends Controller
      */
     public function actionDelete($id)
     {
-        Department::deleteAllUserByDepartment($id);
-
-        $this->findModel($id)->delete();
+        if (!Department::deleteAllUsersByDepartment($id))
+            setFlash('info', 'Нельзя удалить отдел, если сотрудник состоит только в нем');
+        else
+            $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @param $id
+     * @param $user_id
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDeleteUserFromDepartment($id, $user_id)
+    {
+        if (!Department::deleteUserFromDepartment($id, $user_id))
+            setFlash('info', Yii::t('app', 'Пользователь должен всегда состоять как минимум в одном отделе'));
+
+        $this->redirect(['view', 'id' => $id]);
     }
 
     /**

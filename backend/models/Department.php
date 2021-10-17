@@ -101,7 +101,8 @@ class Department extends \yii\db\ActiveRecord
      *
      * @return bool
      */
-    public static function departmentsExists(){
+    public static function departmentsExists()
+    {
         return Department::find()->exists();
     }
 
@@ -123,8 +124,23 @@ class Department extends \yii\db\ActiveRecord
     }
 
 
-    public static function deleteAllUserByDepartment($department_id)
+    /**
+     * @param $department_id
+     * @return false
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public static function deleteAllUsersByDepartment($department_id)
     {
+        $isHaveOtherDepartments = UserToDepartment::find()
+            ->where([
+                '!=', 'department_id', $department_id
+            ])
+            ->all();
+
+        if (empty($isHaveOtherDepartments))
+            return false;
+
         $userToDepartments = UserToDepartment::find()
             ->where([
                 'department_id' => $department_id
@@ -137,10 +153,41 @@ class Department extends \yii\db\ActiveRecord
             $userToDepartment->delete();
             User::findOne($user_id)->delete();
         }
-
     }
 
+    /**
+     * @param $id
+     * @param $user_id
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public static function deleteUserFromDepartment($id, $user_id)
+    {
+        $userToDepartment = UserToDepartment::find()
+            ->where([
+                'department_id' => $id
+            ])
+            ->andWhere([
+                'user_id' => $user_id
+            ])
+            ->one();
 
+        $userHaveInOtherDepartment = UserToDepartment::find()
+            ->where([
+                'user_id' => $user_id
+            ])
+            ->andWhere([
+                '!=', 'department_id', $id
+            ])
+            ->all();
+
+        if (!empty($userHaveInOtherDepartment)) {
+            if ($userToDepartment->delete())
+                return true;
+        }
+
+        return false;
+    }
 
 
 }

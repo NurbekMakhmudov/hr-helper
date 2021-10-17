@@ -76,6 +76,11 @@ class UserToDepartment extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * @param $user_id
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public static function deleteUserToDepartmentByUserId($user_id)
     {
         $userToDepartments = UserToDepartment::find()
@@ -89,5 +94,27 @@ class UserToDepartment extends \yii\db\ActiveRecord
             $userToDepartment->delete();
         }
 
+    }
+
+    /**
+     * @param $user_id
+     * @param $department_id
+     * @return bool
+     */
+    public static function thisUserInDepartmentExists($user_id, $department_id){
+
+        /** @var UserToDepartment $userToDepartment */
+        $userToDepartment = UserToDepartment::find()
+            ->where([
+                'user_id' => $user_id
+            ])
+            ->andWhere([
+                'department_id' => $department_id
+            ])
+            ->one();
+        if (!empty($userToDepartment->id))
+            return true;
+
+        return false;
     }
 }

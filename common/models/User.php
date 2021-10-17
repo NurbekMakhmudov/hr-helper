@@ -425,10 +425,13 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Add department to  user
-     * @return User|null
+     * @return User|false
      */
     public function addDepartment()
     {
+        if (UserToDepartment::thisUserInDepartmentExists($this->id, $this->department))
+            return false;
+
         $this->updated_at = time();
         if ($this->save()) {
             if ($this->saveNewUserToDepartment())

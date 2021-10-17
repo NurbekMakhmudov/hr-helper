@@ -125,6 +125,8 @@ class UserController extends Controller
         if ($this->request->isPost && $model->load($this->request->post())) {
             if ($model->addDepartment())
                 return $this->redirect(['view', 'id' => $model->id]);
+            else
+                setFlash('info', 'Пользователь состоять в этом отделе');
         }
 
         return $this->render('add_department', [
@@ -141,9 +143,13 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        UserToDepartment::deleteUserToDepartmentByUserId($id);
-
-        $this->findModel($id)->delete();
+        /** @var User $model */
+        $model = $this->findModel($id);
+        if (!$model->isAdmin()){
+            UserToDepartment::deleteUserToDepartmentByUserId($id);
+            $model->delete();
+        }else
+            setFlash('info', Yii::t('app', 'Нельзя удалить админа'));
 
         return $this->redirect(['index']);
     }
