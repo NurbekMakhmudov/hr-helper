@@ -161,33 +161,32 @@ class Department extends \yii\db\ActiveRecord
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public static function deleteUserFromDepartment($id, $user_id)
+    public static function deleteUserFromDepartment($department_id, $user_id)
     {
-        $userToDepartment = UserToDepartment::find()
-            ->where([
-                'department_id' => $id
-            ])
-            ->andWhere([
-                'user_id' => $user_id
-            ])
-            ->one();
-
         $userHaveInOtherDepartment = UserToDepartment::find()
             ->where([
                 'user_id' => $user_id
-            ])
-            ->andWhere([
-                '!=', 'department_id', $id
-            ])
-            ->all();
+            ])->andWhere([
+                '!=', 'department_id', $department_id
+            ])->all();
 
-        if (!empty($userHaveInOtherDepartment)) {
-            if ($userToDepartment->delete())
-                return true;
-        }
+        if (empty($userHaveInOtherDepartment))
+            return false;
 
-        return false;
+        $userToDepartment = UserToDepartment::find()
+            ->where([
+                'department_id' => $department_id
+            ])->andWhere([
+                'user_id' => $user_id
+            ])->one();
+
+        if ($userToDepartment->delete())
+            return true;
     }
+
+
+
+
 
 
 }
