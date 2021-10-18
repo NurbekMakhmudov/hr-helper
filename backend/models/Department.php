@@ -147,12 +147,16 @@ class Department extends \yii\db\ActiveRecord
             ])
             ->all();
 
-        /** @var UserToDepartment $userToDepartment */
-        foreach ($userToDepartments as $userToDepartment) {
-            $user_id = $userToDepartment->user_id;
-            $userToDepartment->delete();
-            User::findOne($user_id)->delete();
+        if (!empty($userToDepartments)){
+
+            /** @var UserToDepartment $userToDepartment */
+            foreach ($userToDepartments as $userToDepartment) {
+                $user_id = $userToDepartment->user_id;
+                $userToDepartment->delete();
+                User::findOne($user_id)->delete();
+            }
         }
+        return true;
     }
 
     /**

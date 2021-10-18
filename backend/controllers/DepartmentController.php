@@ -134,7 +134,7 @@ class DepartmentController extends Controller
      */
     public function actionDelete($id)
     {
-        if (!Department::deleteAllUsersByDepartment($id))
+        if (Department::deleteAllUsersByDepartment($id) == false)
             setFlash('info', 'Нельзя удалить отдел, если сотрудник состоит только в нем');
         else
             $this->findModel($id)->delete();
