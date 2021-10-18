@@ -147,16 +147,28 @@ class Department extends \yii\db\ActiveRecord
             ])
             ->all();
 
-        if (!empty($userToDepartments)){
-
+        if (!empty($userToDepartments)) {
             /** @var UserToDepartment $userToDepartment */
             foreach ($userToDepartments as $userToDepartment) {
                 $user_id = $userToDepartment->user_id;
                 $userToDepartment->delete();
-                User::findOne($user_id)->delete();
+
+                self::deleteUserIfNotHaveInOtherDepartment($user_id);
             }
         }
         return true;
+    }
+
+    public static function deleteUserIfNotHaveInOtherDepartment($user_id){
+
+        $userNotHaveInOtherDepartment = UserToDepartment::find()
+            ->where([
+                'user_id' => $user_id
+            ])->all();
+
+        if (empty($userNotHaveInOtherDepartment)){
+            User::findOne($user_id)->delete();
+        }
     }
 
     /**
@@ -184,13 +196,10 @@ class Department extends \yii\db\ActiveRecord
                 'user_id' => $user_id
             ])->one();
 
-        if ($userToDepartment->delete())
-            return true;
+        if (!empty($userToDepartment))
+            if ($userToDepartment->delete())
+                return true;
     }
-
-
-
-
 
 
 }
