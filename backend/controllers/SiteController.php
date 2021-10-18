@@ -128,7 +128,7 @@ class SiteController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
-            Yii::$app->session->setFlash('success', 'Password Changed!');
+            Yii::$app->session->setFlash('success', 'Пароль изменен!');
         }
 
         return $this->render('change_password', [
