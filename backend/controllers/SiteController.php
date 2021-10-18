@@ -4,10 +4,10 @@ namespace backend\controllers;
 
 use backend\forms\ChangePasswordForm;
 use common\models\LoginForm;
-use HttpInvalidParamException;
 use Yii;
-use yii\filters\VerbFilter;
+use yii\base\InvalidParamException;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -123,7 +123,7 @@ class SiteController extends Controller
 
         try {
             $model = new ChangePasswordForm($id);
-        } catch (HttpInvalidParamException $e) {
+        } catch (InvalidParamException $e) {
             throw new \yii\web\BadRequestHttpException($e->getMessage());
         }
 

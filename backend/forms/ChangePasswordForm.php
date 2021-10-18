@@ -2,8 +2,8 @@
 
 namespace backend\forms;
 
-use HttpInvalidParamException;
 use Yii;
+use yii\base\InvalidParamException;
 use yii\base\Model;
 use common\models\User;
 
@@ -26,14 +26,13 @@ class ChangePasswordForm extends Model
      *
      * @param string $token
      * @param array $config name-value pairs that will be used to initialize the object properties
-     * @throws HttpInvalidParamException if token is empty or not valid
      */
     public function __construct($id, $config = [])
     {
         $this->_user = User::findIdentity($id);
 
         if (!$this->_user) {
-            throw new HttpInvalidParamException('Unable to find user!');
+            throw new InvalidParamException('Unable to find user!');
         }
 
         $this->id = $this->_user->id;
