@@ -67,15 +67,24 @@ yii migrate
   
 ##### Страница администратора:
 ![alt text](uploads/t/admin_home.png)
+------------
    
 ##### Страница отделы:
 ![alt text](uploads/t/department.png)
+------------
 
 ##### Форма для создания новой отдел:
 ![alt text](uploads/t/create_departent.png)
+------------
 
 ##### Форма, где можно посмотреть сотрудников по отделам:
 ![alt text](uploads/t/department_info.png)
+------------
+
+##### Форма, где можно посмотреть в каких отделах состоит конкретный сотрудник:
+![alt text](uploads/t/user_info.png)
+------------
+
 
 
 ## License
