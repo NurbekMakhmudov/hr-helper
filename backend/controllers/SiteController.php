@@ -2,7 +2,9 @@
 
 namespace backend\controllers;
 
+use backend\forms\ChangePasswordForm;
 use common\models\LoginForm;
+use HttpInvalidParamException;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -75,8 +77,6 @@ class SiteController extends Controller
         return $this->render('help');
     }
 
-
-
     /**
      * Login action.
      *
@@ -113,4 +113,28 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
+    /**
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionChangePassword()
+    {
+        $id = Yii::$app->user->id;
+
+        try {
+            $model = new ChangePasswordForm($id);
+        } catch (HttpInvalidParamException $e) {
+            throw new \yii\web\BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->changePassword()) {
+            Yii::$app->session->setFlash('success', 'Password Changed!');
+        }
+
+        return $this->render('change_password', [
+            'model' => $model,
+        ]);
+    }
+
+
 }

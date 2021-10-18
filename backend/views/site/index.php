@@ -21,8 +21,4 @@ $this->title = Yii::$app->name;
 
     </div>
 
-    <div class="body-content">
-
-
-    </div>
 </div>

@@ -43,14 +43,13 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Авторизоваться', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])
-            . Html::submitButton(
-                'Выйти (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
+        $menuItems[] =  [
+            'label' => Yii::$app->user->identity->username,
+            'items' => [
+                ['label' => 'Измени пароль', 'url' => ['site/change-password']],
+                ['label' => 'Выйти', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
+            ],
+        ];
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
