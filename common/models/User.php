@@ -61,18 +61,18 @@ class User extends ActiveRecord implements IdentityInterface
             'id' => Yii::t('app', 'ID'),
             'username' => Yii::t('app', 'Username'),
             'firstname' => Yii::t('app', 'Имя пользователя'),
-            'lastname' => Yii::t('app', 'Lastname'),
-            'age' => Yii::t('app', 'Age'),
-            'auth_key' => Yii::t('app', 'Auth Key'),
-            'password_hash' => Yii::t('app', 'Password Hash'),
-            'password_reset_token' => Yii::t('app', 'Password Reset Token'),
-            'email' => Yii::t('app', 'Email'),
-            'phone' => Yii::t('app', 'Phone'),
-            'status' => Yii::t('app', 'Status'),
-            'role' => Yii::t('app', 'Role'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'verification_token' => Yii::t('app', 'Verification Token'),
+            'lastname' => Yii::t('app', 'Фамилия'),
+            'age' => Yii::t('app', 'Возраст'),
+            'auth_key' => Yii::t('app', 'Ключ аутентификации'),
+            'password_hash' => Yii::t('app', 'Хеш пароля'),
+            'password_reset_token' => Yii::t('app', 'Токен сброса пароля'),
+            'email' => Yii::t('app', 'Эл. адрес'),
+            'phone' => Yii::t('app', 'Телефон'),
+            'status' => Yii::t('app', 'Статус'),
+            'role' => Yii::t('app', 'Роль   '),
+            'created_at' => Yii::t('app', 'Дата создания'),
+            'updated_at' => Yii::t('app', 'Дата обновления'),
+            'verification_token' => Yii::t('app', 'Токен подтверждения'),
         ];
     }
 
@@ -173,8 +173,8 @@ class User extends ActiveRecord implements IdentityInterface
     public static function getStatusArray($status = null)
     {
         $array = [
-            self::STATUS_INACTIVE => Yii::t('app', 'INACTIVE'),
-            self::STATUS_ACTIVE => Yii::t('app', 'ACTIVE'),
+            self::STATUS_INACTIVE => Yii::t('app', 'НЕАКТИВНЫЙ'),
+            self::STATUS_ACTIVE => Yii::t('app', 'АКТИВНЫЙ'),
 //            self::STATUS_DELETED => Yii::t('app', 'DELETED'),
         ];
         return $status === null ? $array : $array[$status];

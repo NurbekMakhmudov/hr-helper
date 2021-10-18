@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use common\models\User;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
@@ -22,6 +23,7 @@ class UserSearch extends User
             [['username', 'department', 'firstname', 'lastname', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'phone', 'role', 'verification_token'], 'safe'],
         ];
     }
+
 
     /**
      * {@inheritdoc}

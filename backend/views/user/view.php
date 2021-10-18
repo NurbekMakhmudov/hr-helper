@@ -8,26 +8,27 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model User */
+
 /* @var $searchModel backend\models\DepartmentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Users'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Пользовател'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="user-view">
 
-    <h1>User <?= $this->title ?></h1>
+    <h1>Пользовател <?= $this->title ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Add Department'), ['add-department', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Добавить отдел'), ['add-department', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a(Yii::t('app', 'Обновлять'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php if (!$model->isAdmin()): ?>
-            <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+            <?= Html::a(Yii::t('app', 'Удалить'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'confirm' => Yii::t('app', 'Вы уверены, что хотите удалить этот элемент?'),
                     'method' => 'post',
                 ],
             ]) ?>
@@ -73,10 +74,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <h2>Department information's</h2>
+    <h2><?= Yii::t('app', 'Информация отдела') ?></h2>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
             'id',
             [

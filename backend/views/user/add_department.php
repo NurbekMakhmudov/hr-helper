@@ -9,8 +9,8 @@ use yii\widgets\ActiveForm;
 /* @var $model \common\models\User */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = Yii::t('app', 'Add Department');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Users'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Добавить отдел');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Пользовател'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="add-department">
@@ -21,11 +21,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'department')->dropDownList(Department::getDepartmentsNames(),
         ['options' => [$model->userToDepartments[0]->department->id => ['Selected' => true]]]
-    ) ?>
+    )->label(Yii::t('app', 'Отдел')) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('app', 'Back'), ['view', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Сохранить'), ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Назад'), ['view', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

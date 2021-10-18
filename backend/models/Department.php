@@ -47,10 +47,10 @@ class Department extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'status' => Yii::t('app', 'Status'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
+            'name' => Yii::t('app', 'Имя'),
+            'status' => Yii::t('app', 'Статус'),
+            'created_at' => Yii::t('app', 'Дата создания'),
+            'updated_at' => Yii::t('app', 'Дата обновления'),
         ];
     }
 
@@ -77,8 +77,8 @@ class Department extends \yii\db\ActiveRecord
     public static function getStatusArray($status = null)
     {
         $array = [
-            self::STATUS_ACTIVE => Yii::t('app', 'ACTIVE'),
-            self::STATUS_INACTIVE => Yii::t('app', 'INACTIVE'),
+            self::STATUS_ACTIVE => Yii::t('app', 'АКТИВНЫЙ'),
+            self::STATUS_INACTIVE => Yii::t('app', 'НЕАКТИВНЫЙ'),
         ];
         return $status === null ? $array : $array[$status];
     }
