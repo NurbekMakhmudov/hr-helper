@@ -83,16 +83,19 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+    /*
     public function actionHelp()
     {
         return $this->render('help');
     }
+    */
 
     /**
      * Logs in a user.
      *
      * @return mixed
      */
+    /*
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -110,24 +113,28 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    */
 
     /**
      * Logs out the current user.
      *
      * @return mixed
      */
+    /*
     public function actionLogout()
     {
         Yii::$app->user->logout();
 
         return $this->goHome();
     }
+    */
 
     /**
      * Displays contact page.
      *
      * @return mixed
      */
+    /*
     public function actionContact()
     {
         $model = new ContactForm();
@@ -145,16 +152,19 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    */
 
     /**
      * Displays about page.
      *
      * @return mixed
      */
+    /*
     public function actionAbout()
     {
         return $this->render('about');
     }
+    */
 
     /**
      * Signs user up.
@@ -179,6 +189,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+    /*
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
@@ -196,6 +207,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    */
 
     /**
      * Resets password.
@@ -204,6 +216,7 @@ class SiteController extends Controller
      * @return mixed
      * @throws BadRequestHttpException
      */
+    /*
     public function actionResetPassword($token)
     {
         try {
@@ -222,6 +235,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    */
 
     /**
      * Verify email address
@@ -230,6 +244,7 @@ class SiteController extends Controller
      * @throws BadRequestHttpException
      * @return yii\web\Response
      */
+    /*
     public function actionVerifyEmail($token)
     {
         try {
@@ -245,12 +260,14 @@ class SiteController extends Controller
         Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         return $this->goHome();
     }
+    */
 
     /**
      * Resend verification email
      *
      * @return mixed
      */
+    /*
     public function actionResendVerificationEmail()
     {
         $model = new ResendVerificationEmailForm();
@@ -266,4 +283,5 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+    */
 }
