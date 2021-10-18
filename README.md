@@ -9,20 +9,27 @@
 - Yii 2 framework
 - MySql / MariaDB 10.3
 - Composer 2.0.14
- 
+
 Сборка проекта
 ------------
-
-##### Для сборки нужен *Composer version 2.0.14* и выше
 
 1. Клонируйте этот репозиторий на свой компьютер
 ```yaml
 git clone https://github.com/NurbekMakhmudov/hr-helper.git
 ```
 
+##### Для сборки нужен *Composer version 2.0.14* и выше
+
 2. Запустите эту команду из терминала
 ```yaml
 cd hr-helper
+```
+
+```yaml
+composer update
+```
+
+```yaml
 init
 ```
 
@@ -52,9 +59,11 @@ yii migrate
 
 ##### Главная страница:
 ![alt text](uploads/t/front_home.png)
+------------
 
 ##### Страница авторизоваться:
 ![alt text](uploads/t/login.png)
+------------
   
 ##### Страница администратора:
 ![alt text](uploads/t/admin_home.png)
